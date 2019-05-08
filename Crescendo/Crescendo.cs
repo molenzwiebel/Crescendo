@@ -31,6 +31,27 @@ namespace Crescendo
                 Visible = true
             };
             SetupMenuItems();
+
+            // If this is our first launch, ask for startup and show a bubble.
+            if (!Properties.Settings.Default.launchedBefore)
+            {
+                Properties.Settings.Default.launchedBefore = true;
+                Properties.Settings.Default.Save();
+
+                var result = MessageBox.Show(
+                    "Would you like Crescendo to automatically launch when you start your computer? You can enable or disable this at any time.",
+                    "Crescendo",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button1
+                );
+
+                if (result == DialogResult.Yes) bootKey.SetValue(APP_NAME, Application.ExecutablePath);
+
+                trayIcon.BalloonTipText =
+                    "Crescendo will run in the background. Right-click the tray icon for more information.";
+                trayIcon.ShowBalloonTip(3000);
+            }
         }
 
         private void SetupMenuItems()
