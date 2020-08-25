@@ -7,7 +7,7 @@ Annoyed by the PHUUOOOOOOOOOOOM sound the League client makes after you've accep
 
 # FAQ
 **Where can I download Crescendo?**  
-Click the [Releases](https://github.com/molenzwiebel/Crescendo/releases) tab at the top to download the latest version.
+Click the [Releases](https://github.com/molenzwiebel/Crescendo/releases) link on the right to download the latest version.
 
 **Is this approved by Riot?**  
 Cresendo conforms to both the [general Riot Developer policies](https://developer.riotgames.com/policies.html) and the [League Client development policies](https://developer.riotgames.com/league-client-apis.html), and it is registered on Riot's developer portal. While this doesn't mean that Riot explicitly approves the application or supports it in any way, it makes it increasingly unlikely that using this application will risk your account. [This comment by RiotSargonas](https://www.reddit.com/r/leagueoflegends/comments/80d4r0/runebook_the_ultimate_rune_pages_manager_that_you/duv2r22/) explains more about Riot's approach to applications like this one.
