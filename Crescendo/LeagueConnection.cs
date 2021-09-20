@@ -37,11 +37,6 @@ namespace Crescendo
         public bool IsConnected { get; private set; }
 
         /**
-         * Returns the PID of the Ux process.
-         */
-        public int UXPid => processInfo.Item1.Id;
-
-        /**
          * Creates a new LeagueConnection instance. This will immediately start trying
          * to connect to League.
          */

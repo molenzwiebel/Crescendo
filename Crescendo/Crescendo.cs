@@ -8,7 +8,7 @@ namespace Crescendo
     class Crescendo : ApplicationContext
     {
         public static string APP_NAME = "Crescendo"; // For boot identification
-        public static string VERSION = "1.0.0";
+        public static string VERSION = "1.1.0";
         private RegistryKey bootKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
         private NotifyIcon trayIcon;
@@ -109,8 +109,8 @@ namespace Crescendo
 
             Console.WriteLine("Muting League");
 
-            wasInitiallyMuted = VolumeMixer.GetApplicationMute(league.UXPid).Value;
-            VolumeMixer.SetApplicationMute(league.UXPid, true);
+            wasInitiallyMuted = VolumeMixer.GetLeagueMuted().Value;
+            VolumeMixer.SetLeagueMuted(true);
             isMuted = true;
 
             SetupMenuItems();
@@ -123,7 +123,7 @@ namespace Crescendo
 
             Console.WriteLine("Unmuting League");
 
-            VolumeMixer.SetApplicationMute(league.UXPid, wasInitiallyMuted);
+            VolumeMixer.SetLeagueMuted(wasInitiallyMuted);
             isMuted = false;
 
             SetupMenuItems();

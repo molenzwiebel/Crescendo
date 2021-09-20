@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Crescendo
@@ -9,9 +10,9 @@ namespace Crescendo
      */
     public class VolumeMixer
     {
-        public static bool? GetApplicationMute(int pid)
+        public static bool? GetLeagueMuted()
         {
-            ISimpleAudioVolume volume = GetVolumeObject(pid);
+            ISimpleAudioVolume volume = GetLeagueVolumeObject();
             if (volume == null)
                 return null;
 
@@ -21,9 +22,9 @@ namespace Crescendo
             return mute;
         }
 
-        public static void SetApplicationMute(int pid, bool mute)
+        public static void SetLeagueMuted(bool mute)
         {
-            ISimpleAudioVolume volume = GetVolumeObject(pid);
+            ISimpleAudioVolume volume = GetLeagueVolumeObject();
             if (volume == null)
                 return;
 
@@ -32,7 +33,7 @@ namespace Crescendo
             Marshal.ReleaseComObject(volume);
         }
 
-        private static ISimpleAudioVolume GetVolumeObject(int pid)
+        public static ISimpleAudioVolume GetLeagueVolumeObject()
         {
             // get the speakers (1st render + multimedia) device
             IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
@@ -58,14 +59,21 @@ namespace Crescendo
             {
                 IAudioSessionControl2 ctl;
                 sessionEnumerator.GetSession(i, out ctl);
-                int cpid;
-                ctl.GetProcessId(out cpid);
+                ctl.GetProcessId(out var cpid);
 
-                if (cpid == pid)
+                if (cpid == 0)
+                {
+                    Marshal.ReleaseComObject(ctl);
+                    continue;
+                }
+
+                var process = Process.GetProcessById(cpid);
+                if (process.ProcessName.Contains("LeagueClient"))
                 {
                     volumeControl = ctl as ISimpleAudioVolume;
                     break;
                 }
+
                 Marshal.ReleaseComObject(ctl);
             }
             Marshal.ReleaseComObject(sessionEnumerator);
@@ -141,7 +149,7 @@ namespace Crescendo
     }
 
     [Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface ISimpleAudioVolume
+    public interface ISimpleAudioVolume
     {
         [PreserveSig]
         int SetMasterVolume(float fLevel, ref Guid EventContext);
